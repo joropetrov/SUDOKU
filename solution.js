@@ -9,7 +9,9 @@ function solve() {
     initialiseSudokuMatrix();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
+
     
+
 
     function createHtmlTables() {
 
@@ -66,6 +68,34 @@ function solve() {
     function checkSudoku(){
         
         fillSudokuMatrix();
+        console.log(sudookuMatrix);
+        let checkerIfZeroExist = sudookuMatrix.map((element) => {
+            return element.filter(el => {
+                if (el === 0) {
+                return false;
+            }});
+          });
+          console.log(checkerIfZeroExist);
+        //check if sudoku contains 0 --> return alertMessageFunc 
+        //check if number !== 1-9; allertMessage nums 1-9 only!!!
 
+    }
+
+    function alertMessageFunc(strMessage){
+        
+        let stringMessage = strMessage == undefined ? "PLEASE FILL ALL BOXES" : strMessage;
+        let alertMessage = document.createElement('th');
+        let tr = document.createElement('tr');
+
+        alertMessage.colSpan = "9";
+        alertMessage.innerHTML = stringMessage;
+        alertMessage.style="background-color:red;";
+        tr.appendChild(alertMessage);
+        document.querySelector('tfoot').prepend(tr);
+
+        setInterval(() => {
+            document.querySelector('tfoot').removeChild(tr);
+        }, 3000);
+        return;
     }
 }
