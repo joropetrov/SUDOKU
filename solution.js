@@ -2,11 +2,14 @@ function solve() {
 
     let sudokuTrLenght = 9;
     let tBody = document.querySelector('tbody');
-    let sudookuMatrix = new Array(9).fill(0).map(() => new Array(9).fill(0));
-    
+    let sudookuMatrix = [];
+    let quickCheckBtn = document.querySelector('#quickCheck');
 
     createHtmlTables();
     initialiseSudokuMatrix();
+
+    quickCheckBtn.addEventListener('click', checkSudoku);
+    
 
     function createHtmlTables() {
 
@@ -36,12 +39,33 @@ function solve() {
     }
 
     function initialiseSudokuMatrix() {
-        
+
         for (var i = 0; i < sudokuTrLenght; i++) {
-            
+            sudookuMatrix[i] = [0];
             for (var j = 0; j < sudokuTrLenght; j++) {
                 sudookuMatrix[i][j] = 0;
             }
         }
+    }
+
+    function fillSudokuMatrix(){
+
+        let tableRows = document.querySelectorAll('tbody tr');
+        for (let k = 0; k < tableRows.length; k++) {
+            
+            for (let s = 0; s < tableRows.length; s++) {
+
+                let inputValue = tableRows[k].children[s].firstChild.value;
+                if (inputValue !== '') {
+                    sudookuMatrix[k][s] = Number(inputValue);
+                }
+            }
+        }
+    }
+
+    function checkSudoku(){
+        
+        fillSudokuMatrix();
+
     }
 }
