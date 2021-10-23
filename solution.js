@@ -4,13 +4,16 @@ function solve() {
     let tBody = document.querySelector('tbody');
     let sudookuMatrix = [];
     let quickCheckBtn = document.querySelector('#quickCheck');
-
+    let wrongAnswerOrNum = false;
     createHtmlTables();
     initialiseSudokuMatrix();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
 
-
+    // see later ;
+    function checkForDuplicates(array) {
+        return new Set(array).size !== array.length;
+    }
 
 
     function createHtmlTables() {
@@ -45,7 +48,7 @@ function solve() {
         for (var i = 0; i < sudokuTrLenght; i++) {
             sudookuMatrix[i] = [0];
             for (var j = 0; j < sudokuTrLenght; j++) {
-                sudookuMatrix[i][j] = 0;
+                sudookuMatrix[i][j] = 1;
             }
         }
     }
@@ -53,11 +56,13 @@ function solve() {
     function fillSudokuMatrix() {
 
         let tableRows = document.querySelectorAll('tbody tr');
+
         for (let k = 0; k < tableRows.length; k++) {
 
             for (let s = 0; s < tableRows.length; s++) {
 
                 let inputValue = tableRows[k].children[s].firstChild.value;
+
                 if (inputValue !== '') {
                     sudookuMatrix[k][s] = Number(inputValue);
                 }
@@ -67,13 +72,55 @@ function solve() {
 
     function checkSudoku() {
 
+        wrongAnswerOrNum = false;
         fillSudokuMatrix();
         console.log(sudookuMatrix);
         checkForZeroAndWrongNums(sudookuMatrix);
-        //check if sudoku contains 0 --> return alertMessageFunc 
-        //check if number !== 1-9; allertMessage nums 1-9 only!!!
+
+        if (wrongAnswerOrNum) {
+            // initialiseSudokuMatrix();
+            return;
+        }
+
+        checkRowsAndColsForUniquenes();
 
     }
+
+    function checkRowsAndColsForUniquenes() {
+
+        let rowarr = [];
+        let colArr = [];
+        let message;
+
+        for (let z = 0; z < sudokuTrLenght; z++) {
+
+            rowarr = sudookuMatrix[z];
+            
+            if (checkForDuplicates(rowarr)) {
+                message = `Row Number ${z +1} is not with unique numbers`;
+                alertMessageFunc(message);
+                return;
+            }
+            rowarr = [];
+            colArr = [];
+            for (let b = 0; b < sudokuTrLenght; b++) {
+
+                let colEl = sudookuMatrix[b][z];
+                colArr.push(colEl);
+
+                if (b === 8) {
+
+                    if (checkForDuplicates(colArr)) {
+                        message = `Column Number ${z + 1} is not with unique numbers`;
+                        alertMessageFunc(message);
+                        return;
+                    }
+                }
+            }
+
+        }
+    }
+
 
     function enlightWrongBox(numOne, numTwo) {
 
@@ -91,7 +138,7 @@ function solve() {
         let tr = document.createElement('tr');
 
         alertMessage.colSpan = "9";
-        alertMessage.innerHTML = typeof strMessage === "undefined" ? "Please Fill All Boxes" : strMessage;
+        alertMessage.innerHTML = typeof strMessage === "undefined" ? "Please Fill All Boxes.Zeroes are not allowed" : strMessage;
         alertMessage.style = "background-color:red;";
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
@@ -111,6 +158,7 @@ function solve() {
         for (let v = 0; v < sudokuTrLenght; v++) {
 
             for (let c = 0; c < sudokuTrLenght; c++) {
+
                 let tempValue = nestedArray[v][c];
                 let numOne = v;
                 let numTwo = c;
@@ -120,7 +168,7 @@ function solve() {
                     zeroesExist = true;
                 }
 
-                if (!allowedArr.includes(tempValue)) {
+                if (!allowedArr.includes(tempValue) || typeof tempValue === 'string') {
                     enlightWrongBox(numOne, numTwo);
                     wrongNumExist = true;
                 }
@@ -128,9 +176,11 @@ function solve() {
         }
 
         if (zeroesExist) {
-            return alertMessageFunc();
+            wrongAnswerOrNum = true;
+            alertMessageFunc();
         } else if (wrongNumExist) {
-            return alertMessageFunc(wrongNumMessage);
+            wrongAnswerOrNum = true;
+            alertMessageFunc(wrongNumMessage);
         }
     }
 
