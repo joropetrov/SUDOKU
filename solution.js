@@ -10,7 +10,7 @@ function solve() {
 
     quickCheckBtn.addEventListener('click', checkSudoku);
 
-    
+
 
 
     function createHtmlTables() {
@@ -50,11 +50,11 @@ function solve() {
         }
     }
 
-    function fillSudokuMatrix(){
+    function fillSudokuMatrix() {
 
         let tableRows = document.querySelectorAll('tbody tr');
         for (let k = 0; k < tableRows.length; k++) {
-            
+
             for (let s = 0; s < tableRows.length; s++) {
 
                 let inputValue = tableRows[k].children[s].firstChild.value;
@@ -65,37 +65,73 @@ function solve() {
         }
     }
 
-    function checkSudoku(){
-        
+    function checkSudoku() {
+
         fillSudokuMatrix();
         console.log(sudookuMatrix);
-        let checkerIfZeroExist = sudookuMatrix.map((element) => {
-            return element.filter(el => {
-                if (el === 0) {
-                return false;
-            }});
-          });
-          console.log(checkerIfZeroExist);
+        checkForZeroAndWrongNums(sudookuMatrix);
         //check if sudoku contains 0 --> return alertMessageFunc 
         //check if number !== 1-9; allertMessage nums 1-9 only!!!
 
     }
 
-    function alertMessageFunc(strMessage){
-        
-        let stringMessage = strMessage == undefined ? "PLEASE FILL ALL BOXES" : strMessage;
+    function enlightWrongBox(numOne, numTwo) {
+
+        tBody.querySelectorAll('tr')[numOne].children[numTwo].firstChild.style = "background-color:red";
+
+        setTimeout(() => {
+            tBody.querySelectorAll('tr')[numOne].children[numTwo].firstChild.style = "";
+
+        }, 3800);
+    }
+
+    function alertMessageFunc(strMessage) {
+
         let alertMessage = document.createElement('th');
         let tr = document.createElement('tr');
 
         alertMessage.colSpan = "9";
-        alertMessage.innerHTML = stringMessage;
-        alertMessage.style="background-color:red;";
+        alertMessage.innerHTML = typeof strMessage === "undefined" ? "Please Fill All Boxes" : strMessage;
+        alertMessage.style = "background-color:red;";
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
 
-        setInterval(() => {
+        setTimeout(() => {
             document.querySelector('tfoot').removeChild(tr);
         }, 3000);
-        return;
     }
+
+    function checkForZeroAndWrongNums(nestedArray) {
+
+        let allowedArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let wrongNumMessage = "Only 1-9 Nums are alowed!!!";
+        let wrongNumExist = false;
+        let zeroesExist = false
+
+        for (let v = 0; v < sudokuTrLenght; v++) {
+
+            for (let c = 0; c < sudokuTrLenght; c++) {
+                let tempValue = nestedArray[v][c];
+                let numOne = v;
+                let numTwo = c;
+
+                if (tempValue == 0) {
+                    enlightWrongBox(numOne, numTwo);
+                    zeroesExist = true;
+                }
+
+                if (!allowedArr.includes(tempValue)) {
+                    enlightWrongBox(numOne, numTwo);
+                    wrongNumExist = true;
+                }
+            }
+        }
+
+        if (zeroesExist) {
+            return alertMessageFunc();
+        } else if (wrongNumExist) {
+            return alertMessageFunc(wrongNumMessage);
+        }
+    }
+
 }
