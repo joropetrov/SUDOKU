@@ -89,10 +89,15 @@ function solve() {
 
     }
     // add raw data with correct sudoku and test checkRowsAndColsForUniquenes func
-    // make clear AlertMesssage button in game/below with commented code from AllertMessageFunc
+   
     // make easy, medium and difficulty mode with 3 random options or more :)
      function checkSudokuSquaresForUniquenes(numberOne, numberTwo){
+
         let arr = [];
+
+        if (sudokuUniqueSquareTrack >= 9) {
+            sudokuUniqueSquareTrack = 1;
+        }
 
         for (let a = 0; a < sudokuTrLenght; a++) {
             
@@ -115,7 +120,6 @@ function solve() {
             }
         }
     }
-
 
     function checkRowsAndColsForUniquenes() {
 
@@ -173,9 +177,9 @@ function solve() {
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
 
-        // setTimeout(() => {
-        //     document.querySelector('tfoot').removeChild(tr);
-        // }, 3000);
+        setTimeout(() => {
+            document.querySelector('tfoot').removeChild(tr);
+        }, 3000);
     }
 
     function checkForZeroAndWrongNums(nestedArray) {
