@@ -5,16 +5,16 @@ function solve() {
     let sudookuMatrix = [];
     let quickCheckBtn = document.querySelector('#quickCheck');
     let wrongAnswerOrNum = false;
+    let sudokuUniqueSquareTrack = 1;
+
     createHtmlTables();
     initialiseSudokuMatrix();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
 
-    // see later ;
     function checkForDuplicates(array) {
         return new Set(array).size !== array.length;
     }
-
 
     function createHtmlTables() {
 
@@ -78,13 +78,44 @@ function solve() {
         checkForZeroAndWrongNums(sudookuMatrix);
 
         if (wrongAnswerOrNum) {
-            // initialiseSudokuMatrix();
+            
             return;
         }
 
         checkRowsAndColsForUniquenes();
+        checkSudokuSquaresForUniquenes(0,2);
+        checkSudokuSquaresForUniquenes(3,5);
+        checkSudokuSquaresForUniquenes(6,8);
 
     }
+    // add raw data with correct sudoku and test checkRowsAndColsForUniquenes func
+    // make clear AlertMesssage button in game/below with commented code from AllertMessageFunc
+    // make easy, medium and difficulty mode with 3 random options or more :)
+     function checkSudokuSquaresForUniquenes(numberOne, numberTwo){
+        let arr = [];
+
+        for (let a = 0; a < sudokuTrLenght; a++) {
+            
+            for (let b = numberOne; b <= numberTwo; b++) {
+
+                let element = sudookuMatrix[a][b];
+                arr.push(element);
+
+                if (b === numberTwo) {
+                    if (a === 2 || a === 5 || a === 8) {
+
+                        if (checkForDuplicates(arr)) {
+                            message = `Repeating Numbers in Inner Square Number ${sudokuUniqueSquareTrack}!!!`;
+                            alertMessageFunc(message);
+                        }
+                        arr = [];
+                        sudokuUniqueSquareTrack++;
+                    }
+                }
+            }
+        }
+    }
+
 
     function checkRowsAndColsForUniquenes() {
 
@@ -103,6 +134,7 @@ function solve() {
             }
             rowarr = [];
             colArr = [];
+
             for (let b = 0; b < sudokuTrLenght; b++) {
 
                 let colEl = sudookuMatrix[b][z];
@@ -117,10 +149,8 @@ function solve() {
                     }
                 }
             }
-
         }
     }
-
 
     function enlightWrongBox(numOne, numTwo) {
 
@@ -143,9 +173,9 @@ function solve() {
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
 
-        setTimeout(() => {
-            document.querySelector('tfoot').removeChild(tr);
-        }, 3000);
+        // setTimeout(() => {
+        //     document.querySelector('tfoot').removeChild(tr);
+        // }, 3000);
     }
 
     function checkForZeroAndWrongNums(nestedArray) {
@@ -178,9 +208,11 @@ function solve() {
         if (zeroesExist) {
             wrongAnswerOrNum = true;
             alertMessageFunc();
+            return;
         } else if (wrongNumExist) {
             wrongAnswerOrNum = true;
             alertMessageFunc(wrongNumMessage);
+            return;
         }
     }
 
