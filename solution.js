@@ -9,6 +9,7 @@ function solve() {
 
     createHtmlTables();
     initialiseSudokuMatrix();
+    fillSudokuHTML();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
 
@@ -65,6 +66,37 @@ function solve() {
 
                 if (inputValue !== '') {
                     sudookuMatrix[k][s] = Number(inputValue);
+                }
+            }
+        }
+    }
+
+    function fillSudokuHTML() {
+        
+        let easySudoku = {
+
+            '0': [3, 4, 1, 7, 1, 6, 1, 1, 1],
+            '1': [8, 7, 1, 1, 1, 1, 9, 1, 6],
+            '2': [1, 1, 1, 8, 9, 1, 1, 1, 3],
+            '3': [1, 1, 1, 1, 1, 3, 5, 6, 8],
+            '4': [6, 8, 1, 1, 5, 4, 1, 1, 1],
+            '5': [9, 1, 1, 6, 1, 1, 1, 1, 1],
+            '6': [1, 3, 1, 4, 1, 1, 1, 8, 1],
+            '7': [5, 9, 1, 1, 1, 1, 7, 3, 1],
+            '8': [7, 1, 1, 5, 3, 8, 1, 1, 9]
+        };
+
+        let tableRows = document.querySelectorAll('tbody tr');
+        let easySudokuObj = easySudoku;
+
+        for (let k = 0; k < tableRows.length; k++) {
+
+            for (let s = 0; s < tableRows.length; s++) {
+
+                 let currElement = easySudokuObj[k][s];
+
+                if (currElement !== 1) {
+                    tableRows[k].children[s].firstChild.value = currElement;
                 }
             }
         }
