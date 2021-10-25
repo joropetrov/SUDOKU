@@ -9,9 +9,54 @@ function solve() {
 
     createHtmlTables();
     initialiseSudokuMatrix();
-    fillSudokuHTML();
+
+    // add Win Message
 
     quickCheckBtn.addEventListener('click', checkSudoku);
+
+    function sudokuMode(easyOrDifficultMode){
+
+        let easySudokuObj = {
+ 
+             '0': [3, 4, 1, 7, 1, 6, 1, 1, 1],
+             '1': [8, 7, 1, 1, 1, 1, 9, 1, 6],
+             '2': [1, 1, 1, 8, 9, 1, 1, 1, 3],
+             '3': [1, 1, 1, 1, 1, 3, 5, 6, 8],
+             '4': [6, 8, 1, 1, 5, 4, 1, 1, 1],
+             '5': [9, 1, 1, 6, 1, 1, 1, 1, 1],
+             '6': [1, 3, 1, 4, 1, 1, 1, 8, 1],
+             '7': [5, 9, 1, 1, 1, 1, 7, 3, 1],
+             '8': [7, 1, 1, 5, 3, 8, 1, 1, 9]
+         };
+       
+         let difficultSudokuMode = {
+             '0': [1, 1, 1, 1, 1, 1, 2, 3, 1],
+             '1': [1, 1, 1, 1, 1, 1, 4, 5, 6],
+             '2': [1, 4, 6, 7, 1, 1, 1, 1, 1],
+             '3': [1, 5, 8, 9, 1, 1, 1, 1, 1],
+             '4': [1, 1, 1, 1, 1, 1, 1, 1, 1],
+             '5': [1, 1, 1, 1, 1, 6, 4, 2, 1],
+             '6': [1, 1, 1, 1, 1, 2, 1, 8, 1],
+             '7': [1, 8, 2, 3, 1, 1, 1, 1, 1],
+             '8': [1, 7, 3, 6, 1, 1, 1, 1, 1]
+         };
+ 
+         let correctSudocuForTest = {
+             '0': [1,6,8,5,4,7,2,3,9],
+             '1': [5,7,9,3,6,2,8,1,4],
+             '2': [3,2,4,1,8,9,5,6,7],
+             '3': [7,3,5,4,2,6,9,8,1],
+             '4': [9,8,2,7,5,1,6,4,3],
+             '5': [6,4,1,8,9,3,7,5,2],
+             '6': [8,1,7,2,3,5,4,9,6],
+             '7': [4,9,3,6,7,8,1,2,5],
+             '8': [2,5,6,9,1,4,3,7,8]
+         };
+         if (easyOrDifficultMode == 'Easy Mode') {
+             return easySudokuObj;
+         }
+             return difficultSudokuMode;
+     }
 
     function checkForDuplicates(array) {
         return new Set(array).size !== array.length;
@@ -49,7 +94,7 @@ function solve() {
         for (var i = 0; i < sudokuTrLenght; i++) {
             sudookuMatrix[i] = [0];
             for (var j = 0; j < sudokuTrLenght; j++) {
-                sudookuMatrix[i][j] = 1;
+                sudookuMatrix[i][j] = 0;
             }
         }
     }
@@ -73,29 +118,17 @@ function solve() {
 
     function fillSudokuHTML() {
         
-        let easySudoku = {
-
-            '0': [3, 4, 1, 7, 1, 6, 1, 1, 1],
-            '1': [8, 7, 1, 1, 1, 1, 9, 1, 6],
-            '2': [1, 1, 1, 8, 9, 1, 1, 1, 3],
-            '3': [1, 1, 1, 1, 1, 3, 5, 6, 8],
-            '4': [6, 8, 1, 1, 5, 4, 1, 1, 1],
-            '5': [9, 1, 1, 6, 1, 1, 1, 1, 1],
-            '6': [1, 3, 1, 4, 1, 1, 1, 8, 1],
-            '7': [5, 9, 1, 1, 1, 1, 7, 3, 1],
-            '8': [7, 1, 1, 5, 3, 8, 1, 1, 9]
-        };
-
         let tableRows = document.querySelectorAll('tbody tr');
-        let easySudokuObj = easySudoku;
+
+        let sudokuMode1 = sudokuMode();
 
         for (let k = 0; k < tableRows.length; k++) {
 
             for (let s = 0; s < tableRows.length; s++) {
 
-                 let currElement = easySudokuObj[k][s];
+                 let currElement = sudokuMode1[k][s];
 
-                if (currElement !== 1) {
+                if (currElement !== 0) {
                     tableRows[k].children[s].firstChild.value = currElement;
                 }
             }
@@ -118,11 +151,8 @@ function solve() {
         checkSudokuSquaresForUniquenes(0,2);
         checkSudokuSquaresForUniquenes(3,5);
         checkSudokuSquaresForUniquenes(6,8);
-
     }
-    // add raw data with correct sudoku and test checkRowsAndColsForUniquenes func
-   
-    // make easy, medium and difficulty mode with 3 random options or more :)
+
      function checkSudokuSquaresForUniquenes(numberOne, numberTwo){
 
         let arr = [];
@@ -250,6 +280,47 @@ function solve() {
             alertMessageFunc(wrongNumMessage);
             return;
         }
+    }
+
+    function sudokuMode(easyOrDifficultMode){
+
+       let easySudokuObj = {
+
+            '0': [3, 4, 1, 7, 1, 6, 1, 1, 1],
+            '1': [8, 7, 1, 1, 1, 1, 9, 1, 6],
+            '2': [1, 1, 1, 8, 9, 1, 1, 1, 3],
+            '3': [1, 1, 1, 1, 1, 3, 5, 6, 8],
+            '4': [6, 8, 1, 1, 5, 4, 1, 1, 1],
+            '5': [9, 1, 1, 6, 1, 1, 1, 1, 1],
+            '6': [1, 3, 1, 4, 1, 1, 1, 8, 1],
+            '7': [5, 9, 1, 1, 1, 1, 7, 3, 1],
+            '8': [7, 1, 1, 5, 3, 8, 1, 1, 9]
+        };
+      
+        let difficultSudokuMode = {
+            '0': [1, 1, 1, 1, 1, 1, 2, 3, 1],
+            '1': [1, 1, 1, 1, 1, 1, 4, 5, 6],
+            '2': [1, 4, 6, 7, 1, 1, 1, 1, 1],
+            '3': [1, 5, 8, 9, 1, 1, 1, 1, 1],
+            '4': [1, 1, 1, 1, 1, 1, 1, 1, 1],
+            '5': [1, 1, 1, 1, 1, 6, 4, 2, 1],
+            '6': [1, 1, 1, 1, 1, 2, 1, 8, 1],
+            '7': [1, 8, 2, 3, 1, 1, 1, 1, 1],
+            '8': [1, 7, 3, 6, 1, 1, 1, 1, 1]
+        };
+
+        let correctSudocuForTest = {
+            '0': [1, 6, 8, 5,4,7,2,3,9],
+            '1': [5,7,9,3,6,2,8,1,4],
+            '2': [3,2,4,1,8,9,5,6,7],
+            '3': [7,3,5,4,2,6,9,8,1],
+            '4': [9,8,2,7,5,1,6,4,3],
+            '5': [6,4,1,8,9,3,7,5,2],
+            '6': [8,1,7,2,3,5,4,9,6],
+            '7': [4,9,3,6,7,8,1,2,5],
+            '8': [2,5,6,9,1,4,3,7,8]
+        };
+            return correctSudocuForTest;
     }
 
 }
