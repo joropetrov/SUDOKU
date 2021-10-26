@@ -13,8 +13,6 @@ function solve() {
     createHtmlTables();
     initialiseSudokuMatrix();
 
-    // add Win Message
-
     quickCheckBtn.addEventListener('click', checkSudoku);
 
     easyMode.addEventListener('click', fillSudokuHTML);
@@ -48,6 +46,7 @@ function solve() {
             '8': [0, 7, 3, 6, 0, 0, 0, 0, 0]
         };
 
+        // for test purposes, return  correntSudocu to check functionality
         let correctSudocuForTest = {
             '0': [1, 6, 8, 5, 4, 7, 2, 3, 9],
             '1': [5, 7, 9, 3, 6, 2, 8, 1, 4],
@@ -59,8 +58,6 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-         //test for win asnwer
-        //return correctSudocuForTest
 
         if (buttonName === 'easyMode') {
             return easySudokuObj;
@@ -68,7 +65,6 @@ function solve() {
 
         return difficultSudokuMode;
     }
-    
 
     function checkForDuplicates(array) {
         return new Set(array).size !== array.length;
@@ -130,15 +126,13 @@ function solve() {
 
     function fillSudokuHTML() {
         let inputFields = document.querySelectorAll('input');
-        console.log(inputFields)
+        
         for (let index = 0; index < inputFields.length; index++) {
             inputFields[index].value = '';
         }
 
         let tableRows = document.querySelectorAll('tbody tr');
         let buttonName = event.target.id;
-        console.log(buttonName)
-
         let sudokuMode1 = sudokuMode(buttonName);
 
         for (let k = 0; k < tableRows.length; k++) {
@@ -157,8 +151,8 @@ function solve() {
     function checkSudoku() {
 
         wrongAnswerOrNum = false;
+
         fillSudokuMatrix();
-        console.log(sudookuMatrix);
         checkForZeroAndWrongNums(sudookuMatrix);
 
         if (wrongAnswerOrNum) {
@@ -170,6 +164,11 @@ function solve() {
         checkSudokuSquaresForUniquenes(0, 2);
         checkSudokuSquaresForUniquenes(3, 5);
         checkSudokuSquaresForUniquenes(6, 8);
+        // fix that below
+        if (document.querySelectorAll('tfoot tr').length == 2) {
+            let winMessage = "You Won!!! Sudoku riddle was solved.";
+           alertMessageFunc(winMessage);
+        }
     }
 
     function checkSudokuSquaresForUniquenes(numberOne, numberTwo) {
@@ -260,7 +259,7 @@ function solve() {
 
         setTimeout(() => {
             document.querySelector('tfoot').removeChild(tr);
-        }, 3000);
+        }, 5000);
     }
 
     function checkForZeroAndWrongNums(nestedArray) {
