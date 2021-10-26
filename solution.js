@@ -58,7 +58,7 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-
+        
         if (buttonName === 'easyMode') {
             return easySudokuObj;
         }
@@ -164,7 +164,7 @@ function solve() {
         checkSudokuSquaresForUniquenes(0, 2);
         checkSudokuSquaresForUniquenes(3, 5);
         checkSudokuSquaresForUniquenes(6, 8);
-        // fix that below
+        
         if (document.querySelectorAll('tfoot tr').length == 2) {
             let winMessage = "You Won!!! Sudoku riddle was solved.";
            alertMessageFunc(winMessage);
@@ -250,16 +250,29 @@ function solve() {
 
         let alertMessage = document.createElement('th');
         let tr = document.createElement('tr');
+        let time = 9;
 
         alertMessage.colSpan = "9";
-        alertMessage.innerHTML = typeof strMessage === "undefined" ? "Please Fill All Boxes.Zeroes are not allowed" : strMessage;
+        alertMessage.innerHTML = typeof strMessage === "undefined" ? `Please Fill All Boxes. Zeroes are not allowed!\n
+        Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
         alertMessage.style = "background-color:red;";
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
-
+       
         setTimeout(() => {
+           
             document.querySelector('tfoot').removeChild(tr);
-        }, 5000);
+        }, 10000);
+
+        setInterval(()=>{
+            timer();
+        }, 1000)
+
+        function timer(){
+            time-= 1;
+            alertMessage.innerHTML = typeof strMessage === "undefined" ? `Please Fill All Boxes. Zeroes are not allowed!\n
+            Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
+        }
     }
 
     function checkForZeroAndWrongNums(nestedArray) {
