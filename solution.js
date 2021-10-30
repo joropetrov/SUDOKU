@@ -1,6 +1,7 @@
 function solve() {
 
-
+    const winMessage = "You Won!!! Sudoku riddle was solved."; 
+    const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
     let easyMode = document.querySelector('#easyMode');
     let hardMode = document.querySelector('#hardMode');
@@ -58,7 +59,7 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-        
+            return correctSudocuForTest;
         if (buttonName === 'easyMode') {
             return easySudokuObj;
         }
@@ -153,25 +154,23 @@ function solve() {
         wrongAnswerOrNum = false;
 
         fillSudokuMatrix();
-        checkForZeroAndWrongNums(sudookuMatrix);
 
-        if (wrongAnswerOrNum) {
-
+        if ( checkForZeroAndWrongNums(sudookuMatrix)) {
             return;
         }
+       
+        let firstWinCondition = checkRowsAndColsForUniquenes();
+        let secondWinCondition = checkSudokuSquaresForUniquenes(0, 2); // Innersquares 1-3
+        let thirdWinCondition = checkSudokuSquaresForUniquenes(3, 5); // Innersquares 4-6
+        let fourthWiCondition = checkSudokuSquaresForUniquenes(6, 8); // Innersquares 7-9
 
-        checkRowsAndColsForUniquenes();
-        checkSudokuSquaresForUniquenes(0, 2);
-        checkSudokuSquaresForUniquenes(3, 5);
-        checkSudokuSquaresForUniquenes(6, 8);
-        
-        if (document.querySelectorAll('tfoot tr').length == 2) {
-            let winMessage = "You Won!!! Sudoku riddle was solved.";
-           alertMessageFunc(winMessage);
+        if (firstWinCondition && secondWinCondition &&
+            thirdWinCondition && fourthWiCondition) {
+            alertMessageFunc(winMessage);
         }
     }
 
-    function checkSudokuSquaresForUniquenes(numberOne, numberTwo) {
+    function checkSudokuSquaresForUniquenes(startRowIndex, endRowIndex) {
 
         let arr = [];
 
@@ -181,17 +180,18 @@ function solve() {
 
         for (let a = 0; a < sudokuTrLenght; a++) {
 
-            for (let b = numberOne; b <= numberTwo; b++) {
+            for (let b = startRowIndex; b <= endRowIndex; b++) {
 
                 let element = sudookuMatrix[a][b];
                 arr.push(element);
 
-                if (b === numberTwo) {
+                if (b === endRowIndex) {
                     if (a === 2 || a === 5 || a === 8) {
 
                         if (checkForDuplicates(arr)) {
                             message = `Repeating Numbers in Inner Square Number ${sudokuUniqueSquareTrack}!!!`;
                             alertMessageFunc(message);
+                            return false;
                         }
                         arr = [];
                         sudokuUniqueSquareTrack++;
@@ -199,49 +199,49 @@ function solve() {
                 }
             }
         }
+        return true;
     }
 
     function checkRowsAndColsForUniquenes() {
 
-        let rowarr = [];
-        let colArr = [];
         let message;
 
         for (let z = 0; z < sudokuTrLenght; z++) {
 
-            rowarr = sudookuMatrix[z];
+            const rowarr = sudookuMatrix[z];
 
             if (checkForDuplicates(rowarr)) {
                 message = `Row Number ${z + 1} is not with unique numbers`;
                 alertMessageFunc(message);
-                return;
+                return false;
             }
-            rowarr = [];
-            colArr = [];
+            
+             let colArr = [];
 
             for (let b = 0; b < sudokuTrLenght; b++) {
 
                 let colEl = sudookuMatrix[b][z];
                 colArr.push(colEl);
 
-                if (b === 8) {
+                if (b === sudokuTrLenght-1) {
 
                     if (checkForDuplicates(colArr)) {
                         message = `Column Number ${z + 1} is not with unique numbers`;
                         alertMessageFunc(message);
-                        return;
+                        return false;
                     }
                 }
             }
         }
+            return true;
     }
 
-    function enlightWrongBox(numOne, numTwo) {
+    function enlightWrongBox(rowIndex, colIndex) {
 
-        tBody.querySelectorAll('tr')[numOne].children[numTwo].firstChild.style = "background-color:red";
+        tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson";
 
         setTimeout(() => {
-            tBody.querySelectorAll('tr')[numOne].children[numTwo].firstChild.style = "";
+            tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "";
 
         }, 3800);
     }
@@ -255,7 +255,7 @@ function solve() {
         alertMessage.colSpan = "9";
         alertMessage.innerHTML = typeof strMessage === "undefined" ? `Please Fill All Boxes. Zeroes are not allowed!\n
         Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
-        alertMessage.style = "background-color:red;";
+        tr.style="outline: thin solid";
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').prepend(tr);
        
@@ -278,7 +278,7 @@ function solve() {
     function checkForZeroAndWrongNums(nestedArray) {
 
         let allowedArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let wrongNumMessage = "Only 1-9 Nums are alowed!!!";
+       
         let wrongNumExist = false;
         let zeroesExist = false
 
@@ -287,30 +287,26 @@ function solve() {
             for (let c = 0; c < sudokuTrLenght; c++) {
 
                 let tempValue = nestedArray[v][c];
-                let numOne = v;
-                let numTwo = c;
+                let rowIndex = v;
+                let colIndex = c;
 
                 if (tempValue == 0) {
-                    enlightWrongBox(numOne, numTwo);
+                    enlightWrongBox(rowIndex, colIndex);
                     zeroesExist = true;
-                }
-
-                if (!allowedArr.includes(tempValue) || typeof tempValue === 'string') {
-                    enlightWrongBox(numOne, numTwo);
+                } else if (!allowedArr.includes(tempValue) || typeof tempValue === 'string') {
+                    enlightWrongBox(rowIndex, colIndex);
                     wrongNumExist = true;
                 }
             }
         }
-
+ 
         if (zeroesExist) {
-            wrongAnswerOrNum = true;
             alertMessageFunc();
-            return;
+            return true;
         } else if (wrongNumExist) {
-            wrongAnswerOrNum = true;
             alertMessageFunc(wrongNumMessage);
-            return;
+            return true;
         }
+        return false;
     }
-
 }
