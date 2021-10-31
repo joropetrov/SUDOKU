@@ -1,5 +1,5 @@
 function solve() {
-
+    
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
@@ -69,6 +69,7 @@ function solve() {
     }
 
     function checkForDuplicates(array) {
+
         let checkArr = [1,2,3,4,5,6,7,8,9];
         let setArr = new Set(array);
 
@@ -79,7 +80,7 @@ function solve() {
                 }});
             return true;
         }
-        
+
         return false;
     }
 
@@ -179,16 +180,13 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             alertMessageFunc(winMessage);
+            sudokuUniqueSquareTrack = 1;
         }
     }
 
     function checkSudokuSquaresForUniquenes(startRowIndex, endRowIndex) {
 
         let arr = [];
-
-        if (sudokuUniqueSquareTrack >= 9) {
-            sudokuUniqueSquareTrack = 1;
-        }
 
         for (let a = 0; a < sudokuTrLenght; a++) {
 
@@ -202,10 +200,14 @@ function solve() {
 
                         if (checkForDuplicates(arr)) {
                             message = `Repeating Numbers in Inner Square Number ${sudokuUniqueSquareTrack}!!!`;
+                            sudokuUniqueSquareTrack = 1;
                             alertMessageFunc(message);
+                            //fix issue with searchRepeatingElinSquares, take coordinates of innerSquare only
+                            searchRepeatingElinSquares(startRowIndex, endRowIndex);
                             return false;
                         }
                         arr = [];
+                        sudokuSquareRepeatingNums = [];
                         sudokuUniqueSquareTrack++;
                     }
                 }
@@ -246,6 +248,23 @@ function solve() {
             }
         }
             return true;
+    }
+
+     // make rotation only for the specifiiq Quadrant, like 6 or so
+    function searchRepeatingElementinSquares(startNum, endNum) {
+        for (let a = 0; a < sudokuTrLenght; a++) {
+    
+            for (let b = startNum; b <= endNum; b++) {
+                
+                const element = sudookuMatrix[a][b];
+    
+                if (sudokuSquareRepeatingNums.includes(element)) {
+                    console.log(element)
+                    enlightWrongBox(a, b);
+                }
+            }
+        }
+    
     }
 
     function enlightWrongBox(rowIndex, colIndex) {
