@@ -1,12 +1,11 @@
 function solve() {
-    
+    // make checkRowsAndColsForUniquenes to enlight in green color row and col when not unique;
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
     let easyMode = document.querySelector('#easyMode');
     let hardMode = document.querySelector('#hardMode');
     let quickCheckBtn = document.querySelector('#quickCheck');
-    let wrongAnswerOrNum = false;
     let sudookuMatrix = [];
     let sudokuUniqueSquareTrack = 1;
     let sudokuTrLenght = 9;
@@ -70,14 +69,33 @@ function solve() {
 
     function checkForDuplicates(array) {
 
-        let checkArr = [1,2,3,4,5,6,7,8,9];
+         return new Set(array).size !== array.length;
+
+    }
+
+    function checkForDuplicatesInSquares(array) {
+
         let setArr = new Set(array);
 
         if (setArr.size !== array.length) {
-            checkArr.map(x => {
-                if(!setArr.has(x)){
-                    sudokuSquareRepeatingNums.push(x);
-                }});
+
+            let counter = 0;
+
+            for (let index = 0; index < array.length; index++) {
+                const outerEl = array[index];
+                
+                for (let j = 0; j < array.length; j++) {
+                    const innerEl = array[j];
+                    if (outerEl == innerEl) {
+                        counter ++;
+                    }
+                }
+                if (counter >= 2) {
+                    sudokuSquareRepeatingNums.push(outerEl);
+                }
+                counter = 0;
+            }
+                
             return true;
         }
 
@@ -164,8 +182,6 @@ function solve() {
 
     function checkSudoku() {
 
-        wrongAnswerOrNum = false;
-
         fillSudokuMatrix();
 
         if ( checkForZeroAndWrongNums(sudookuMatrix)) {
@@ -180,13 +196,19 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             alertMessageFunc(winMessage);
-            sudokuUniqueSquareTrack = 1;
         }
+        sudokuUniqueSquareTrack = 1;
+
     }
 
     function checkSudokuSquaresForUniquenes(startRowIndex, endRowIndex) {
 
+        let isTrue = true;
         let arr = [];
+
+        if (sudokuUniqueSquareTrack === 9) {
+            sudokuUniqueSquareTrack = 1;
+        }
 
         for (let a = 0; a < sudokuTrLenght; a++) {
 
@@ -198,13 +220,13 @@ function solve() {
                 if (b === endRowIndex) {
                     if (a === 2 || a === 5 || a === 8) {
 
-                        if (checkForDuplicates(arr)) {
+                        if (checkForDuplicatesInSquares(arr)) {
                             message = `Repeating Numbers in Inner Square Number ${sudokuUniqueSquareTrack}!!!`;
-                            sudokuUniqueSquareTrack = 1;
+                            //sudokuUniqueSquareTrack = 1;
                             alertMessageFunc(message);
-                            //fix issue with searchRepeatingElinSquares, take coordinates of innerSquare only
-                            searchRepeatingElinSquares(startRowIndex, endRowIndex);
-                            return false;
+                            searchRepeatingElementinSquares(startRowIndex, endRowIndex, a);
+                            sudokuSquareRepeatingNums = [];
+                            isTrue = false;
                         }
                         arr = [];
                         sudokuSquareRepeatingNums = [];
@@ -213,11 +235,12 @@ function solve() {
                 }
             }
         }
-        return true;
+        return isTrue;
     }
 
     function checkRowsAndColsForUniquenes() {
 
+        let isTrue = true;
         let message;
 
         for (let z = 0; z < sudokuTrLenght; z++) {
@@ -227,7 +250,7 @@ function solve() {
             if (checkForDuplicates(rowarr)) {
                 message = `Row Number ${z + 1} is not with unique numbers`;
                 alertMessageFunc(message);
-                return false;
+                isTrue = false;
             }
             
              let colArr = [];
@@ -242,24 +265,23 @@ function solve() {
                     if (checkForDuplicates(colArr)) {
                         message = `Column Number ${z + 1} is not with unique numbers`;
                         alertMessageFunc(message);
-                        return false;
+                        isTrue = false;
                     }
                 }
             }
         }
-            return true;
+            return isTrue;
     }
 
-     // make rotation only for the specifiiq Quadrant, like 6 or so
-    function searchRepeatingElementinSquares(startNum, endNum) {
-        for (let a = 0; a < sudokuTrLenght; a++) {
+    function searchRepeatingElementinSquares(startNum, endNum, startRow) {
+        for (let a = startRow - 2; a <= startRow; a++) {
     
             for (let b = startNum; b <= endNum; b++) {
                 
                 const element = sudookuMatrix[a][b];
     
                 if (sudokuSquareRepeatingNums.includes(element)) {
-                    console.log(element)
+                    
                     enlightWrongBox(a, b);
                 }
             }
