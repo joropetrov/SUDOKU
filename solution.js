@@ -10,6 +10,7 @@ function solve() {
     let sudookuMatrix = [];
     let sudokuUniqueSquareTrack = 1;
     let sudokuTrLenght = 9;
+    let sudokuSquareRepeatingNums = [];
 
     createHtmlTables();
     initialiseSudokuMatrix();
@@ -68,7 +69,18 @@ function solve() {
     }
 
     function checkForDuplicates(array) {
-        return new Set(array).size !== array.length;
+        let checkArr = [1,2,3,4,5,6,7,8,9];
+        let setArr = new Set(array);
+
+        if (setArr.size !== array.length) {
+            checkArr.map(x => {
+                if(!setArr.has(x)){
+                    sudokuSquareRepeatingNums.push(x);
+                }});
+            return true;
+        }
+        
+        return false;
     }
 
     function createHtmlTables() {
