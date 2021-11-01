@@ -1,5 +1,5 @@
 function solve() {
-    // make checkRowsAndColsForUniquenes to enlight in green color row and col when not unique;
+    
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
@@ -59,7 +59,7 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-            return correctSudocuForTest;
+           
         if (buttonName === 'easyMode') {
             return easySudokuObj;
         }
@@ -221,9 +221,6 @@ function solve() {
                     if (a === 2 || a === 5 || a === 8) {
 
                         if (checkForDuplicatesInSquares(arr)) {
-                            message = `Repeating Numbers in Inner Square Number ${sudokuUniqueSquareTrack}!!!`;
-                            //sudokuUniqueSquareTrack = 1;
-                            alertMessageFunc(message);
                             searchRepeatingElementinSquares(startRowIndex, endRowIndex, a);
                             sudokuSquareRepeatingNums = [];
                             isTrue = false;
@@ -248,8 +245,7 @@ function solve() {
             const rowarr = sudookuMatrix[z];
 
             if (checkForDuplicates(rowarr)) {
-                message = `Row Number ${z + 1} is not with unique numbers`;
-                alertMessageFunc(message);
+                enlightWrongRowOrCol(z,sudokuTrLenght, true);
                 isTrue = false;
             }
             
@@ -263,8 +259,7 @@ function solve() {
                 if (b === sudokuTrLenght-1) {
 
                     if (checkForDuplicates(colArr)) {
-                        message = `Column Number ${z + 1} is not with unique numbers`;
-                        alertMessageFunc(message);
+                        enlightWrongRowOrCol(z,sudokuTrLenght, false);
                         isTrue = false;
                     }
                 }
@@ -288,6 +283,31 @@ function solve() {
         }
     
     }
+    function enlightWrongRowOrCol(rowIndex,loopNums, rowTrueColFalse){
+
+        if (rowTrueColFalse) {
+
+            for (let index = 0; index < loopNums; index++) {
+                
+                tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "background-color:green";
+
+                setTimeout(() => {
+                    tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "";
+
+                }, 4200);
+            }
+        } else{
+            for (let index = 0; index < loopNums; index++) {
+                
+                tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "background-color:green";
+    
+                setTimeout(() => {
+                    tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "";
+    
+                }, 4200);
+            }
+        }
+    }
 
     function enlightWrongBox(rowIndex, colIndex) {
 
@@ -296,7 +316,7 @@ function solve() {
         setTimeout(() => {
             tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "";
 
-        }, 3800);
+        }, 4200);
     }
 
     function alertMessageFunc(strMessage) {
