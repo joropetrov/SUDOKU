@@ -1,5 +1,10 @@
 function solve() {
-    
+    //win message and wrongNumMessage to appear below all tables and with bootstrap 
+    // include Toast https://getbootstrap.com/docs/5.1/components/toasts/
+    //checkButton to dissapear when clicked, then after setTimeout for colors dissapears button appears again
+    //include bootstrap, check it all and try it, modal, alert, badjes 
+    //inside colors when error occurs has to be bigger, css fix
+    //Refactor enlightWrongRowOrCol -->  tBody.querySelectorAll('tr')[rowIndex].children[index] --> can make that in function/let that receives 2 params
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
@@ -59,7 +64,7 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-           
+        return correctSudocuForTest;      
         if (buttonName === 'easyMode') {
             return easySudokuObj;
         }
@@ -125,8 +130,6 @@ function solve() {
             }
             tBody.appendChild(tr);
         }
-
-
     }
 
     function initialiseSudokuMatrix() {
@@ -288,8 +291,8 @@ function solve() {
         if (rowTrueColFalse) {
 
             for (let index = 0; index < loopNums; index++) {
-                
-                tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "background-color:green";
+                 
+                tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "background-color:green; height: 95%";
 
                 setTimeout(() => {
                     tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "";
@@ -299,7 +302,9 @@ function solve() {
         } else{
             for (let index = 0; index < loopNums; index++) {
                 
-                tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "background-color:green";
+                tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "background-color:green; height: 95%";
+                
+
     
                 setTimeout(() => {
                     tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "";
@@ -311,7 +316,7 @@ function solve() {
 
     function enlightWrongBox(rowIndex, colIndex) {
 
-        tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson";
+        tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson; height: 95%";
 
         setTimeout(() => {
             tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "";
