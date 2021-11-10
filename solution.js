@@ -151,9 +151,10 @@ function solve() {
 
                 let inputValue = tableRows[k].children[s].firstChild.value;
 
-                if (inputValue !== '') {
-                    sudookuMatrix[k][s] = Number(inputValue);
+                if (inputValue === "") {
+                    sudookuMatrix[k][s] = 0;
                 }
+                sudookuMatrix[k][s] = Number(inputValue);
             }
         }
     }
@@ -285,7 +286,7 @@ function solve() {
         }
     
     }
-    
+
     function colorWrongRowOrCol(a, b, c){
         for (let index = 0; index < c; index++) {
                  
