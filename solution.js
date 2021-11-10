@@ -3,7 +3,6 @@ function solve() {
     // include Toast https://getbootstrap.com/docs/5.1/components/toasts/
     //checkButton to dissapear when clicked, then after setTimeout for colors dissapears button appears again
     //include bootstrap, check it all and try it, modal, alert, badjes 
-    //inside colors when error occurs has to be bigger, css fix
     //Refactor enlightWrongRowOrCol -->  tBody.querySelectorAll('tr')[rowIndex].children[index] --> can make that in function/let that receives 2 params
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
@@ -15,6 +14,7 @@ function solve() {
     let sudokuUniqueSquareTrack = 1;
     let sudokuTrLenght = 9;
     let sudokuSquareRepeatingNums = [];
+    let quickCheckBtnIsNotHidden = quickCheckBtn.hidden = "";
 
     createHtmlTables();
     initialiseSudokuMatrix();
@@ -185,6 +185,7 @@ function solve() {
 
     function checkSudoku() {
 
+        quickCheckBtn.hidden = "hidden";
         fillSudokuMatrix();
 
         if ( checkForZeroAndWrongNums(sudookuMatrix)) {
@@ -241,7 +242,6 @@ function solve() {
     function checkRowsAndColsForUniquenes() {
 
         let isTrue = true;
-        let message;
 
         for (let z = 0; z < sudokuTrLenght; z++) {
 
@@ -296,7 +296,7 @@ function solve() {
 
                 setTimeout(() => {
                     tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "";
-
+                     quickCheckBtn.hidden = "";
                 }, 4200);
             }
         } else{
@@ -308,7 +308,7 @@ function solve() {
     
                 setTimeout(() => {
                     tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "";
-    
+                    quickCheckBtn.hidden = "";
                 }, 4200);
             }
         }
@@ -320,6 +320,7 @@ function solve() {
 
         setTimeout(() => {
             tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "";
+            quickCheckBtn.hidden = "";
 
         }, 4200);
     }
@@ -338,7 +339,6 @@ function solve() {
         document.querySelector('tfoot').prepend(tr);
        
         setTimeout(() => {
-           
             document.querySelector('tfoot').removeChild(tr);
         }, 10000);
 
