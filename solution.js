@@ -1,9 +1,7 @@
 function solve() {
     //win message and wrongNumMessage to appear below all tables and with bootstrap 
     // include Toast https://getbootstrap.com/docs/5.1/components/toasts/
-    //checkButton to dissapear when clicked, then after setTimeout for colors dissapears button appears again
     //include bootstrap, check it all and try it, modal, alert, badjes 
-    //Refactor enlightWrongRowOrCol -->  tBody.querySelectorAll('tr')[rowIndex].children[index] --> can make that in function/let that receives 2 params
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     let tBody = document.querySelector('tbody');
@@ -287,15 +285,18 @@ function solve() {
     
     }
 
+    function removeColorBoxes(a, b, c){
+        setTimeout(() => {
+            tBody.querySelectorAll('tr')[`${a == undefined ? c : a}`].children[`${b == undefined ? c : b}`].firstChild.style = "";
+             quickCheckBtn.hidden = "";
+        }, 4200);
+    }
+
     function colorWrongRowOrCol(a, b, c){
         for (let index = 0; index < c; index++) {
                  
             tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:green; height: 95%";
-
-            setTimeout(() => {
-                tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "";
-                 quickCheckBtn.hidden = "";
-            }, 4200);
+            removeColorBoxes(a, b, index);
         }
     }
 
@@ -311,12 +312,7 @@ function solve() {
     function enlightWrongBox(rowIndex, colIndex) {
 
         tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson; height: 95%";
-
-        setTimeout(() => {
-            tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "";
-            quickCheckBtn.hidden = "";
-
-        }, 4200);
+        removeColorBoxes(rowIndex, colIndex);
     }
 
     function alertMessageFunc(strMessage) {
