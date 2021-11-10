@@ -285,31 +285,25 @@ function solve() {
         }
     
     }
+    
+    function colorWrongRowOrCol(a, b, c){
+        for (let index = 0; index < c; index++) {
+                 
+            tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:green; height: 95%";
+
+            setTimeout(() => {
+                tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "";
+                 quickCheckBtn.hidden = "";
+            }, 4200);
+        }
+    }
+
     function enlightWrongRowOrCol(rowIndex,loopNums, rowTrueColFalse){
 
         if (rowTrueColFalse) {
-
-            for (let index = 0; index < loopNums; index++) {
-                 
-                tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "background-color:green; height: 95%";
-
-                setTimeout(() => {
-                    tBody.querySelectorAll('tr')[rowIndex].children[index].firstChild.style = "";
-                     quickCheckBtn.hidden = "";
-                }, 4200);
-            }
+            colorWrongRowOrCol(rowIndex, undefined, loopNums);
         } else{
-            for (let index = 0; index < loopNums; index++) {
-                
-                tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "background-color:green; height: 95%";
-                
-
-    
-                setTimeout(() => {
-                    tBody.querySelectorAll('tr')[index].children[rowIndex].firstChild.style = "";
-                    quickCheckBtn.hidden = "";
-                }, 4200);
-            }
+            colorWrongRowOrCol(undefined, rowIndex, loopNums);
         }
     }
 
