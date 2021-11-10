@@ -70,13 +70,15 @@ input{
 
 input[type='number'] {
     -moz-appearance:textfield;
+    width: 90%;
+    height: 90%;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-
+ 
 #check{
 	margin: 0 auto;
     text-align: center;
