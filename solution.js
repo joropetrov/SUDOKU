@@ -14,7 +14,6 @@ function solve() {
     let sudokuUniqueSquareTrack = 1;
     let sudokuTrLenght = 9;
     let sudokuSquareRepeatingNums = [];
-    let quickCheckBtnIsNotHidden = quickCheckBtn.hidden = "";
 
     createHtmlTables();
     initialiseSudokuMatrix();
@@ -336,7 +335,7 @@ function solve() {
         Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
         tr.style="outline: thin solid";
         tr.appendChild(alertMessage);
-        document.querySelector('tfoot').prepend(tr);
+        document.querySelector('tfoot').append(tr);
        
         setTimeout(() => {
             document.querySelector('tfoot').removeChild(tr);
