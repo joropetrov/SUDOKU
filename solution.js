@@ -198,6 +198,7 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             alertMessageFunc(winMessage);
+            toastBootstrap();
         }
         sudokuUniqueSquareTrack = 1;
 
@@ -376,5 +377,26 @@ function solve() {
             return true;
         }
         return false;
+    }
+
+    function toastBootstrap(message){
+        let toastBox = document.createElement('div');
+        toastBox.classList = `toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true`;
+        toastBox.id = "liveToast";
+        toastBox.innerHTML =
+        `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+      `;
+        document.querySelector('tfoot').append(toastBox);
+        let toastLiveExample = document.getElementById('liveToast');
+        console.log(toastLiveExample);
+        let toast = new bootstrap.Toast(toastLiveExample);
+        console.log(toast)
+        toast.show();
     }
 }
