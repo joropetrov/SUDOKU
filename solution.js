@@ -198,7 +198,7 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             alertMessageFunc(winMessage);
-            toastBootstrap();
+            toastBootstrap(winMessage);
         }
         sudokuUniqueSquareTrack = 1;
 
@@ -296,7 +296,7 @@ function solve() {
     function colorWrongRowOrCol(a, b, c){
         for (let index = 0; index < c; index++) {
                  
-            tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:green; height: 95%";
+            tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:green;";
             removeColorBoxes(a, b, index);
         }
     }
@@ -312,7 +312,7 @@ function solve() {
 
     function enlightWrongBox(rowIndex, colIndex) {
 
-        tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson; height: 95%";
+        tBody.querySelectorAll('tr')[rowIndex].children[colIndex].firstChild.style = "background-color:crimson;";
         removeColorBoxes(rowIndex, colIndex);
     }
 
@@ -383,6 +383,7 @@ function solve() {
         let toastBox = document.createElement('div');
         toastBox.classList = `toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true`;
         toastBox.id = "liveToast";
+        toastBox.style ="outline: solid thin;";
         toastBox.innerHTML =
         `
             <div class="d-flex">
@@ -392,7 +393,7 @@ function solve() {
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
       `;
-        document.querySelector('tfoot').append(toastBox);
+        document.querySelector('#container').append(toastBox);
         let toastLiveExample = document.getElementById('liveToast');
         console.log(toastLiveExample);
         let toast = new bootstrap.Toast(toastLiveExample);
