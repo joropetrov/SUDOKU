@@ -1,9 +1,11 @@
 function solve() {
-    //win message and wrongNumMessage to appear below all tables and with bootstrap 
+    //fix table input size, try to put it in div or only div or else. 
+    //win message and wrongNumMessage to appear below all tables and with bootstrap , correct message for wrong nums and zeroes and so on l
     // include Toast https://getbootstrap.com/docs/5.1/components/toasts/
     //include bootstrap, check it all and try it, modal, alert, badjes 
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
+    const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
     let tBody = document.querySelector('tbody');
     let easyMode = document.querySelector('#easyMode');
     let hardMode = document.querySelector('#hardMode');
@@ -13,7 +15,7 @@ function solve() {
     let sudokuTrLenght = 9;
     let sudokuSquareRepeatingNums = [];
 
-    createHtmlTables();
+    createHtml();
     initialiseSudokuMatrix();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
@@ -104,7 +106,7 @@ function solve() {
         return false;
     }
 
-    function createHtmlTables() {
+    function createHtml() {
 
         for (let index = 0; index < sudokuTrLenght; index++) {
 
@@ -127,6 +129,7 @@ function solve() {
             }
             tBody.appendChild(tr);
         }
+        createToastBootstrap();
     }
 
     function initialiseSudokuMatrix() {
@@ -323,8 +326,7 @@ function solve() {
         let time = 9;
 
         alertMessage.colSpan = "9";
-        alertMessage.innerHTML = typeof strMessage === "undefined" ? `Please Fill All Boxes. Zeroes are not allowed!\n
-        Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
+        alertMessage.innerHTML = `${strMessage} Message dissapears in ${time}sec.`;
         tr.style="outline: thin solid";
         tr.appendChild(alertMessage);
         document.querySelector('tfoot').append(tr);
@@ -370,16 +372,24 @@ function solve() {
         }
  
         if (zeroesExist) {
-            alertMessageFunc();
+            alertMessageFunc(zeroesExistMessage);
+            toastMessageExecute(zeroesExistMessage);
             return true;
         } else if (wrongNumExist) {
             alertMessageFunc(wrongNumMessage);
+            toastMessageExecute(wrongNumMessage);
             return true;
         }
         return false;
     }
 
-    function toastBootstrap(message){
+    function toastMessageExecute(message){
+        document.getElementsByClassName('toast-body').innerHTML = message;
+        let toast = new bootstrap.Toast(document.getElementById('liveToast'));
+        toast.show();
+    }
+
+    function createToastBootstrap(){
         let toastBox = document.createElement('div');
         toastBox.classList = `toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true`;
         toastBox.id = "liveToast";
@@ -388,16 +398,10 @@ function solve() {
         `
             <div class="d-flex">
                 <div class="toast-body">
-                    ${message}
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
       `;
         document.querySelector('#container').append(toastBox);
-        let toastLiveExample = document.getElementById('liveToast');
-        console.log(toastLiveExample);
-        let toast = new bootstrap.Toast(toastLiveExample);
-        console.log(toast)
-        toast.show();
     }
 }
