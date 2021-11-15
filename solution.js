@@ -201,7 +201,7 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             alertMessageFunc(winMessage);
-            toastBootstrap(winMessage);
+            toastMessageExecute(winMessage);
         }
         sudokuUniqueSquareTrack = 1;
 
@@ -384,7 +384,7 @@ function solve() {
     }
 
     function toastMessageExecute(message){
-        document.getElementsByClassName('toast-body').innerHTML = message;
+        document.querySelector('.toast-body').innerText = message;
         let toast = new bootstrap.Toast(document.getElementById('liveToast'));
         toast.show();
     }
