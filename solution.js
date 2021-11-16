@@ -1,14 +1,8 @@
 function solve() {
-    //fix table input size, try to put it in div or only div or else. 
-    //win message and wrongNumMessage to appear below all tables and with bootstrap , correct message for wrong nums and zeroes and so on l
-    // include Toast https://getbootstrap.com/docs/5.1/components/toasts/
-    //include bootstrap, check it all and try it, modal, alert, badjes 
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
     let tBody = document.querySelector('tbody');
-    let easyMode = document.querySelector('#easyMode');
-    let hardMode = document.querySelector('#hardMode');
     let quickCheckBtn = document.querySelector('#quickCheck');
     let sudookuMatrix = [];
     let sudokuUniqueSquareTrack = 1;
@@ -20,9 +14,10 @@ function solve() {
 
     quickCheckBtn.addEventListener('click', checkSudoku);
 
-    easyMode.addEventListener('click', fillSudokuHTML);
+    document.querySelector('#easyMode').addEventListener('click', fillSudokuHTML);
+    document.querySelector('#hardMode').addEventListener('click', fillSudokuHTML);
     
-    hardMode.addEventListener('click', fillSudokuHTML);
+    document.querySelector('#testMode').addEventListener('click', fillSudokuHTML);
 
     function sudokuMode(buttonName) {
         
@@ -51,7 +46,6 @@ function solve() {
             '8': [0, 7, 3, 6, 0, 0, 0, 0, 0]
         };
 
-        // for test purposes, return  correntSudocu to check functionality
         let correctSudocuForTest = {
             '0': [1, 6, 8, 5, 4, 7, 2, 3, 9],
             '1': [5, 7, 9, 3, 6, 2, 8, 1, 4],
@@ -63,11 +57,12 @@ function solve() {
             '7': [4, 9, 3, 6, 7, 8, 1, 2, 5],
             '8': [2, 5, 6, 9, 1, 4, 3, 7, 8]
         };
-        return correctSudocuForTest;      
+              
         if (buttonName === 'easyMode') {
             return easySudokuObj;
+        } else if (buttonName === 'testMode') {
+            return correctSudocuForTest;
         }
-
         return difficultSudokuMode;
     }
 
@@ -106,16 +101,29 @@ function solve() {
         return false;
     }
 
+    function drawTableRowColors(){
+        for (let index = 0; index < array.length; index++) {
+            if (index % 2 == 0) {
+                input.style.backgroundColor = "#eee";
+            }else{
+                input.style.backgroundColor = "#ddd";
+            }
+            
+        }
+    }
+
     function createHtml() {
 
         for (let index = 0; index < sudokuTrLenght; index++) {
 
             let tr = document.createElement('tr');
             tr.id = index;
-
+           
             for (let j = 0; j < sudokuTrLenght; j++) {
                 let td = document.createElement('td');
+               
                 let input = document.createElement('input');
+               
                 input.type = "number";
                 td.id = j;
                 if (j == 2 || j == 5 || j == 8) {
@@ -299,7 +307,7 @@ function solve() {
     function colorWrongRowOrCol(a, b, c){
         for (let index = 0; index < c; index++) {
                  
-            tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:green;";
+            tBody.querySelectorAll('tr')[`${a == undefined ? index : a}`].children[`${b == undefined ? index : b}`].firstChild.style = "background-color:#5cd187;";
             removeColorBoxes(a, b, index);
         }
     }
@@ -341,8 +349,7 @@ function solve() {
 
         function timer(){
             time-= 1;
-            alertMessage.innerHTML = typeof strMessage === "undefined" ? `Please Fill All Boxes. Zeroes are not allowed!\n
-            Message dissapears in ${time}sec.` : `${strMessage} Message dissapears in ${time}sec.`;
+            alertMessage.innerHTML = `${strMessage} Message dissapears in ${time}sec.`;
         }
     }
 
