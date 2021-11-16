@@ -100,18 +100,7 @@ function solve() {
 
         return false;
     }
-
-    function drawTableRowColors(){
-        for (let index = 0; index < array.length; index++) {
-            if (index % 2 == 0) {
-                input.style.backgroundColor = "#eee";
-            }else{
-                input.style.backgroundColor = "#ddd";
-            }
-            
-        }
-    }
-
+    
     function createHtml() {
 
         for (let index = 0; index < sudokuTrLenght; index++) {
