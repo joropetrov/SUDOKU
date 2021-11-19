@@ -88,3 +88,9 @@ input::-webkit-inner-spin-button {
 table{
    margin-right: 100px;
 }
+button:hover:enabled{
+    background: #0007d5;
+    border: 1px solid #0007d5;
+    color: white;
+}
+
