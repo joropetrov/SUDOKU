@@ -1,9 +1,5 @@
 function solve() {
-    // those const may go to the classes where they're used.
-    // hide all buttons on quickCheck except startNewgame, also when winMessageAppears
-    const winMessage = "You Won!!! Sudoku riddle was solved."; 
-    const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
-    const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
+    
     let tBody = document.querySelector('tbody');
     let quickCheckBtn = document.querySelector('#quickCheck');
     let sudookuMatrix = [];
@@ -20,7 +16,6 @@ function solve() {
     document.querySelector('#testMode').addEventListener('click', fillSudokuHTML);
     document.querySelector('#loadSaveGame').addEventListener('click', fillSudokuHTML);
     document.querySelector('#saveProgress').addEventListener('click', saveGameProgress);
-    
 
     function sudokuMode(buttonName) {
         
@@ -203,6 +198,7 @@ function solve() {
 
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
+            const winMessage = "You Won!!! Sudoku riddle was solved."; 
             toastMessageExecute(winMessage);
             document.querySelector('#clear').disabled = "";
         }
@@ -359,9 +355,11 @@ function solve() {
         }
  
         if (zeroesExist) {
+            const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
             toastMessageExecute(zeroesExistMessage);
             return true;
         } else if (wrongNumExist) {
+            const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
             toastMessageExecute(wrongNumMessage);
             return true;
         }
