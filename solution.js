@@ -1,4 +1,6 @@
 function solve() {
+    // those const may go to the classes where they're used.
+    // hide all buttons on quickCheck except startNewgame, also when winMessageAppears
     const winMessage = "You Won!!! Sudoku riddle was solved."; 
     const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
     const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
@@ -13,7 +15,6 @@ function solve() {
     initialiseSudokuMatrix();
 
     quickCheckBtn.addEventListener('click', checkSudoku);
-
     document.querySelector('#easyMode').addEventListener('click', fillSudokuHTML);
     document.querySelector('#hardMode').addEventListener('click', fillSudokuHTML);
     document.querySelector('#testMode').addEventListener('click', fillSudokuHTML);
@@ -187,7 +188,8 @@ function solve() {
 
     function checkSudoku() {
 
-        quickCheckBtn.hidden = "hidden";
+        hideButtons("disabled");
+        
         fillSudokuMatrix();
 
         if ( checkForZeroAndWrongNums(sudookuMatrix)) {
@@ -202,7 +204,7 @@ function solve() {
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
             toastMessageExecute(winMessage);
-
+            document.querySelector('#clear').disabled = "";
         }
         sudokuUniqueSquareTrack = 1;
 
@@ -293,8 +295,19 @@ function solve() {
     function removeColorBoxes(a, b, c){
         setTimeout(() => {
             tBody.querySelectorAll('tr')[`${a == undefined ? c : a}`].children[`${b == undefined ? c : b}`].firstChild.style = "";
-             quickCheckBtn.hidden = "";
+             hideButtons("");
         }, 4200);
+    }
+
+    function hideButtons(hiddenOrNot){
+        quickCheckBtn.disabled = hiddenOrNot;
+        document.querySelector('#easyMode').disabled = hiddenOrNot;
+        document.querySelector('#hardMode').disabled = hiddenOrNot;
+        document.querySelector('#testMode').disabled = hiddenOrNot;
+        document.querySelector('#loadSaveGame').disabled = hiddenOrNot;
+        document.querySelector('#saveProgress').disabled = hiddenOrNot;
+        document.querySelector('#clear').disabled = hiddenOrNot;
+        
     }
 
     function colorWrongRowOrCol(a, b, c){
