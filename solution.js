@@ -16,8 +16,10 @@ function solve() {
 
     document.querySelector('#easyMode').addEventListener('click', fillSudokuHTML);
     document.querySelector('#hardMode').addEventListener('click', fillSudokuHTML);
-    
     document.querySelector('#testMode').addEventListener('click', fillSudokuHTML);
+    document.querySelector('#loadSaveGame').addEventListener('click', fillSudokuHTML);
+    document.querySelector('#saveProgress').addEventListener('click', saveGameProgress);
+    
 
     function sudokuMode(buttonName) {
         
@@ -62,6 +64,8 @@ function solve() {
             return easySudokuObj;
         } else if (buttonName === 'testMode') {
             return correctSudocuForTest;
+        } else if (buttonName === 'loadSaveGame') {
+            return JSON.parse(window.localStorage.getItem('sudokuProgress'));
         }
         return difficultSudokuMode;
     }
@@ -197,8 +201,8 @@ function solve() {
 
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
-            alertMessageFunc(winMessage);
             toastMessageExecute(winMessage);
+
         }
         sudokuUniqueSquareTrack = 1;
 
@@ -316,32 +320,6 @@ function solve() {
         removeColorBoxes(rowIndex, colIndex);
     }
 
-    function alertMessageFunc(strMessage) {
-
-        let alertMessage = document.createElement('th');
-        let tr = document.createElement('tr');
-        let time = 9;
-
-        alertMessage.colSpan = "9";
-        alertMessage.innerHTML = `${strMessage} Message dissapears in ${time}sec.`;
-        tr.style="outline: thin solid";
-        tr.appendChild(alertMessage);
-        document.querySelector('tfoot').append(tr);
-       
-        setTimeout(() => {
-            document.querySelector('tfoot').removeChild(tr);
-        }, 10000);
-
-        setInterval(()=>{
-            timer();
-        }, 1000)
-
-        function timer(){
-            time-= 1;
-            alertMessage.innerHTML = `${strMessage} Message dissapears in ${time}sec.`;
-        }
-    }
-
     function checkForZeroAndWrongNums(nestedArray) {
 
         let allowedArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -368,11 +346,9 @@ function solve() {
         }
  
         if (zeroesExist) {
-            alertMessageFunc(zeroesExistMessage);
             toastMessageExecute(zeroesExistMessage);
             return true;
         } else if (wrongNumExist) {
-            alertMessageFunc(wrongNumMessage);
             toastMessageExecute(wrongNumMessage);
             return true;
         }
@@ -400,4 +376,13 @@ function solve() {
       `;
         document.querySelector('#container').append(toastBox);
     }
+
+    function saveGameProgress(){
+        const toastSaveGameMessage = "Current SUDOKU Progress Saved";
+        fillSudokuMatrix();
+        let currentSudokuProgress = JSON.stringify(sudookuMatrix);
+        window.localStorage.setItem('sudokuProgress', currentSudokuProgress);
+        toastMessageExecute(toastSaveGameMessage);
+    }
+    
 }
