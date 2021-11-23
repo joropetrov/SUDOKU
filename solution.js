@@ -1,5 +1,9 @@
 function solve() {
-    
+
+    const winMessage = "You Won!!! Sudoku riddle was solved.";
+    const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
+    const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
+    const toastSaveGameMessage = "Current SUDOKU Progress Saved";
     let tBody = document.querySelector('tbody');
     let quickCheckBtn = document.querySelector('#quickCheck');
     let sudookuMatrix = [];
@@ -198,7 +202,7 @@ function solve() {
 
         if (firstWinCondition && secondWinCondition &&
             thirdWinCondition && fourthWiCondition) {
-            const winMessage = "You Won!!! Sudoku riddle was solved."; 
+             
             toastMessageExecute(winMessage);
             document.querySelector('#clear').disabled = "";
         }
@@ -355,11 +359,11 @@ function solve() {
         }
  
         if (zeroesExist) {
-            const zeroesExistMessage = "Please Fill All Boxes. Zeroes are not allowed!\n";
+            
             toastMessageExecute(zeroesExistMessage);
             return true;
         } else if (wrongNumExist) {
-            const wrongNumMessage = "Only 1-9 Nums are alowed!!!";
+            
             toastMessageExecute(wrongNumMessage);
             return true;
         }
@@ -385,11 +389,11 @@ function solve() {
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
       `;
-        document.querySelector('#container').append(toastBox);
+        document.querySelector('body').append(toastBox);
     }
 
     function saveGameProgress(){
-        const toastSaveGameMessage = "Current SUDOKU Progress Saved";
+        
         fillSudokuMatrix();
         let currentSudokuProgress = JSON.stringify(sudookuMatrix);
         window.localStorage.setItem('sudokuProgress', currentSudokuProgress);
