@@ -82,8 +82,8 @@ input::-webkit-inner-spin-button {
 }
 .toast {
     position: absolute !important;
-    top: 28% !important;
-    left: 43% !important;
+    top: 26% !important;
+    left: 45% !important;
 }
 table{
    margin-right: 100px;
